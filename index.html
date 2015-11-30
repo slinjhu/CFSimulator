@@ -1,0 +1,139 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,300,100' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src='lib/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/d3.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.flot.js"></script>
+
+    <script src="ode.js"></script>
+
+    <link href="lib/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="main.css" rel="stylesheet" type="text/css" />
+    <title> CF Simulator </title>
+</head>
+
+<body ng-app="ode" ng-controller="odeController as ode">
+
+<h2 align="center">Community Functioning Simulator</h2>
+
+
+<div class="row">
+
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">CF curve</h3></div>
+            <div class="panel-body">
+                <div id="div-plot" style="width: 100%; height: 250px;"></div>
+                <span style="color:gray; text-align:right; display:block; margin:5px;">Time (month) </span>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Resilience</h3></div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th></th> <th>T half</th> <th>Resilience</th> <th>Resistance</th> <th>Recovery</th>
+                    </tr>
+                    <tr class="result0">
+                        <th>Line0</th> <td>{{ode.rslt0.tHalf.toFixed(3)}}</td> <td>{{ode.rslt0.Resilience.toFixed(3)}}</td> <td>{{ode.rslt0.Resistance.toFixed(3)}}</td> <td>{{ode.rslt0.Recovery.toFixed(3)}}</td>
+                    </tr>
+                    <tr class="result1">
+                        <th>Line1</th> <td>{{ode.rslt1.tHalf.toFixed(3)}}</td> <td>{{ode.rslt1.Resilience.toFixed(3)}}</td> <td>{{ode.rslt1.Resistance.toFixed(3)}}</td> <td>{{ode.rslt1.Recovery.toFixed(3)}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Control</h3></div>
+            <div class="panel-body">
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="ode.freeze0" ng-change="ode.update()"> Freeze Line 0 </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="ode.isPandemic" ng-change="ode.update()"> is pandemic model</label>
+                </div>
+
+                <table class="table table-hover" id="sliders">
+                    <tr class="info">
+                        <th>Magnitude of the event</th>
+                        <td>{{ode.Event}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.Event" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="info">
+                        <th> External Resource</th>
+                        <td>{{ode.ER}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.ER" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="info">
+                        <th> Social Cohesion</th>
+                        <td> {{ode.SC}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.SC" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="info">
+                        <th>Preparedness</th>
+                        <td>{{ode.PR}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PR" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="info">
+                        <th>Pre-Event Community Functioning</th>
+                        <td>{{ode.PreCF}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PreCF" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="info">
+                        <th>Prevention Mitigation</th>
+                        <td>{{ode.PM}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PM" ng-change="ode.update()"></td>
+                    </tr>
+
+                    <tr class="info">
+                        <th>Population Vulnerability Inequality Deprivation</th>
+                        <td>{{ode.PVID}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PVID" ng-change="ode.update()"></td>
+                    </tr>
+
+                    <tr class="danger">
+                        <th>CF depletion rate constant</th>
+                        <td>{{ode.CFdplt}}</td>
+                        <td><input type="range" min=1 max=20 step=0.2 ng-model="ode.CFdplt" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="danger">
+                        <th>Event decay rate constant</th>
+                        <td>{{ode.Edecay}}</td>
+                        <td><input type="range" min=1 max=20 step=0.2 ng-model="ode.Edecay" ng-change="ode.update()"></td>
+                    </tr>
+
+                    <tr class="danger">
+                        <th>ER flow rate constant</th>
+                        <td>{{ode.ERflow}}</td>
+                        <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.ERflow" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="danger">
+                        <th>PR flow rate constant</th>
+                        <td>{{ode.PRflow}}</td>
+                        <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.PRflow" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr class="danger">
+                        <th>SC flow rate constant</th>
+                        <td>{{ode.SCflow}}</td>
+                        <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.SCflow" ng-change="ode.update()"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+</script>
+
+
+</body>
+</html>
