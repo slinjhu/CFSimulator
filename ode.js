@@ -1,43 +1,14 @@
 
-
-
-function calculate_resistance(sol){
-    var rslt = {};
-    var CFmin = Math.min.apply(Math, sol.CF);
-    var Idxmin = sol.CF.indexOf(CFmin);
-    var CF0 = sol.CF[0];
-    rslt.Resistance = 100 * CFmin / CF0;
-    // Find T half using bisection
-    var CFhalf = 0.5 * (CFmin + CF0);
-    var Idx1 = Idxmin;
-    var Idx2 = sol.CF.length - 1;
-    while(Idx2 - Idx1 > 1){
-        var Idx0 = Math.round( 0.5 * ( Idx1 + Idx2) );
-        if(sol.CF[Idx0] == CFhalf){
-            break;
-        }else{
-            if(sol.CF[Idx0] > CFhalf){
-                Idx2 = Idx0;
-            }else{
-                Idx1 = Idx0;
-            }
-        }
-    }
-    rslt.tHalf = sol.tspan[Idx0];
-    rslt.Resilience = 1 / rslt.tHalf;
-    return rslt;
-}
-
-
-function update_curve(points0, points1) {
+// plot two curves together with legends
+function plot2(points0, points1) {
 
     var plot_options = {
         legend:{
-            backgroundOpacity: 0.5,
+            backgroundOpacity: 0.1,
             noColumns: 0,
             position: "ne"
         },
-        yaxes: [{ min:-0.05, max:1.09}],
+        yaxes: [{ min:-0.05, max:1.19}],
         xaxes: [{ min:-0.8, max:12}],
     };
 
@@ -47,11 +18,6 @@ function update_curve(points0, points1) {
     ], plot_options);
 
 }
-
-
-
-
-
 
 (function(angular) {
     'use strict';
@@ -102,7 +68,7 @@ function update_curve(points0, points1) {
                 this.points0 = points1;
                 this.rslt0 = this.rslt1;
             }
-            update_curve(this.points0, points1);
+            plot2(this.points0, points1);
 
 
         };

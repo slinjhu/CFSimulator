@@ -29,9 +29,15 @@ input[type=range]{
 	width: 300px;
 }
 
-#sliders th{
+.table th{
 	text-align: right;
 }
-#sliders td{
+.table td{
 	min-width: 50px;
+}
+
+.sliderTitle{
+	text-align: center;
+	color: RoyalBlue;
+	font-weight: 700;
 }

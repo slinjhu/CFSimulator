@@ -16,11 +16,14 @@
 
 <body ng-app="ode" ng-controller="odeController as ode">
 
-<h2 align="center"><a href="http://slinjhu.github.io/CFSimulator/">Community Functioning Simulator</a></h2>
+<h2 align="center">
+    <a href="http://slinjhu.github.io/CFSimulator/">
+        Community Functioning Simulator
+    </a>
+</h2>
 
 
 <div class="row">
-
     <div class="col-md-5">
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">CF curve</h3></div>
@@ -59,66 +62,70 @@
                     <label><input type="checkbox" ng-model="ode.isPandemic" ng-change="ode.update()"> is pandemic model</label>
                 </div>
 
-                <table class="table table-hover" id="sliders">
-                    <tr class="info">
+                <h4 class="sliderTitle">Domain initial values</h4>
+                <table class="table table-hover table-striped">
+                    <tr>
                         <th>Magnitude of the event</th>
                         <td>{{ode.Event}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.Event" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="info">
+                    <tr>
                         <th> External Resource</th>
                         <td>{{ode.ER}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.ER" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="info">
+                    <tr>
                         <th> Social Cohesion</th>
                         <td> {{ode.SC}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.SC" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="info">
+                    <tr>
                         <th>Preparedness</th>
                         <td>{{ode.PR}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PR" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="info">
+                    <tr>
                         <th>Pre-Event Community Functioning</th>
                         <td>{{ode.PreCF}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PreCF" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="info">
+                    <tr>
                         <th>Prevention Mitigation</th>
                         <td>{{ode.PM}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PM" ng-change="ode.update()"></td>
                     </tr>
 
-                    <tr class="info">
+                    <tr>
                         <th>Population Vulnerability Inequality Deprivation</th>
                         <td>{{ode.PVID}}</td>
                         <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.PVID" ng-change="ode.update()"></td>
                     </tr>
+                </table>
 
-                    <tr class="danger">
+                <h4 class="sliderTitle">Flow valve constants</h4>
+                <table class="table table-hover table-striped">
+                    <tr>
                         <th>CF depletion rate constant</th>
                         <td>{{ode.CFdplt}}</td>
                         <td><input type="range" min=1 max=20 step=0.2 ng-model="ode.CFdplt" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="danger">
+                    <tr>
                         <th>Event decay rate constant</th>
                         <td>{{ode.Edecay}}</td>
                         <td><input type="range" min=1 max=20 step=0.2 ng-model="ode.Edecay" ng-change="ode.update()"></td>
                     </tr>
 
-                    <tr class="danger">
+                    <tr>
                         <th>ER flow rate constant</th>
                         <td>{{ode.ERflow}}</td>
                         <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.ERflow" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="danger">
+                    <tr>
                         <th>PR flow rate constant</th>
                         <td>{{ode.PRflow}}</td>
                         <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.PRflow" ng-change="ode.update()"></td>
                     </tr>
-                    <tr class="danger">
+                    <tr>
                         <th>SC flow rate constant</th>
                         <td>{{ode.SCflow}}</td>
                         <td><input type="range" min=0.1 max=2 step=0.1 ng-model="ode.SCflow" ng-change="ode.update()"></td>
@@ -130,9 +137,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-
-</script>
 
 
 </body>
