@@ -90,13 +90,12 @@ function plot2(points0, points1) {
 
 
             // CF depletion rate
+            var Event_decay_rate = this.Edecay * local.Event * (local.PM + local.PVID)/2;
             if (this.isPandemic){
-                var event_peak = 2.0;
-                var event_spread = 1.0;
-                var coef = this.Edecay * local.Event / (Math.sqrt( 2 * 3.1415926) * event_spread);
-                var Event_decay_rate = coef * Math.exp( -(1/2) * Math.pow((t - event_peak) / event_spread, 2) );
-            }else{
-                var Event_decay_rate = this.Edecay * local.Event * (local.PM + local.PVID)/2;
+                var mu = 2.0; // event peak (mean)
+                var sigma = 1.0; // event spread (std)
+                var pi = Math.PI;
+                Event_decay_rate *= (1/Math.sqrt(2*pi*sigma*sigma)) * Math.exp(-(t-mu)*(t-mu) / (2*sigma*sigma));
             }
 
             var CF_depletion_rate = local.CF * Event_decay_rate;
