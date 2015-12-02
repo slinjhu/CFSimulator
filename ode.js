@@ -22,10 +22,13 @@ function plot2(points0, points1) {
 (function(angular) {
     'use strict';
     angular.module('ode', []).controller('odeController', function(){
-        // Initial values
         this.freeze0 = false;
+        // Event parameters
         this.isPandemic = false;
-
+        this.Edamage=4;
+        this.Pmu = 2; // peak time
+        this.Psigma = 1; // spread
+        // Initial domain values
         this.PreCF = 1;
         this.Event=0.5;
         this.ER=0.5;
@@ -33,8 +36,8 @@ function plot2(points0, points1) {
         this.PR=0.5;
         this.PM=0.5;
         this.PVID=0.5;
+        // Flow valve constants
         this.CFdplt=3;
-        this.Edecay=4;
         this.ERflow=1;
         this.PRflow=1;
         this.SCflow=1;
@@ -90,23 +93,23 @@ function plot2(points0, points1) {
 
 
             // CF depletion rate
-            var Event_decay_rate = this.Edecay * local.Event * (local.PM + local.PVID)/2;
+
+
+            var Event_damage_rate = this.Edamage * local.Event * (local.PM + local.PVID)/2;
             if (this.isPandemic){
-                var mu = 2.0; // event peak (mean)
-                var sigma = 1.0; // event spread (std)
-                var pi = Math.PI;
-                Event_decay_rate *= (1/Math.sqrt(2*pi*sigma*sigma)) * Math.exp(-(t-mu)*(t-mu) / (2*sigma*sigma));
+                var coef = 1 / Math.sqrt(2 * Math.PI * this.Psigma * this.Psigma);
+                Event_damage_rate *= coef * Math.exp(-(t - this.Pmu)*(t - this.Pmu) / (2 * this.Psigma * this.Psigma));
             }
 
-            var CF_depletion_rate = local.CF * Event_decay_rate;
+            var CF_depletion_rate = this.CFdplt * local.CF * Event_damage_rate;
 
             // Derivatives
             var d = [];
             d.SC = -SC_flow_rate;
             d.PR = - PR_flow_rate;
             d.ER = - ER_flow_rate;
-            d.Event = - Math.max(Event_decay_rate, 0);
-            d.CF = CF_replenish_rate - this.CFdplt * CF_depletion_rate;
+            d.Event = - Math.max(Event_damage_rate, 0);
+            d.CF = CF_replenish_rate -  CF_depletion_rate;
             d.PreCF = 0;
             d.PVID = 0;
             d.PM = 0;
@@ -131,7 +134,7 @@ function plot2(points0, points1) {
             while(t <= tmax){
                 sol.CF.push(W[0]);
                 sol.tspan.push(t);
-                var dt = (t<1)? 0.05 : 0.2;
+                var dt = (t<1)? 0.025 : 0.1;
                 W = this.int_one_step(W, t, dt);
                 t += dt;
             }
