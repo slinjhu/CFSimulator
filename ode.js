@@ -78,30 +78,33 @@ function plot2(points0, points1) {
 
 
         this.fdW = function fdW(t, W){
-            var local = [];
+            var valueNow = [];
             for(var i=0; i < this.varlist.length; i++){
                 var item = this.varlist[i];
-                local[item] = parseFloat(W[i]);
+                valueNow[item] = parseFloat(W[i]);
             }
 
             // Replenish
-            var CF_drop = Math.max( local.PreCF - local.CF, 0 );
-            var SC_flow_rate = this.SCflow * local.CF * local.SC * CF_drop;
-            var PR_flow_rate = this.PRflow * local.PR * CF_drop;
-            var ER_flow_rate = this.ERflow * local.ER * CF_drop;
+            var CF_drop = Math.max( valueNow.PreCF - valueNow.CF, 0 );
+            var SC_flow_rate = this.SCflow * valueNow.CF * valueNow.SC * CF_drop;
+            var PR_flow_rate = this.PRflow * valueNow.PR * CF_drop;
+            var ER_flow_rate = this.ERflow * valueNow.ER * CF_drop;
             var CF_replenish_rate = SC_flow_rate + PR_flow_rate + ER_flow_rate;
 
 
             // CF depletion rate
 
 
-            var Event_damage_rate = this.Edamage * local.Event * (local.PM + local.PVID)/2;
+            var Event_damage_rate;
             if (this.isPandemic){
                 var coef = 1 / Math.sqrt(2 * Math.PI * this.Psigma * this.Psigma);
+                Event_damage_rate = this.Event * (valueNow.PM + valueNow.PVID)/2;
                 Event_damage_rate *= coef * Math.exp(-(t - this.Pmu)*(t - this.Pmu) / (2 * this.Psigma * this.Psigma));
+            }else{
+                Event_damage_rate = this.Edamage * valueNow.Event * (valueNow.PM + valueNow.PVID)/2;
             }
 
-            var CF_depletion_rate = this.CFdplt * local.CF * Event_damage_rate;
+            var CF_depletion_rate = this.CFdplt * valueNow.CF * Event_damage_rate;
 
             // Derivatives
             var d = [];
