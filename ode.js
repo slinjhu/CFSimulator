@@ -37,7 +37,7 @@ function plot2(points0, points1) {
         this.PM=0.5;
         this.PVID=0.5;
         // Flow valve constants
-        this.CFdplt=3;
+        this.CFdplt=5;
         this.ERflow=1;
         this.PRflow=1;
         this.SCflow=1;
@@ -93,12 +93,10 @@ function plot2(points0, points1) {
 
 
             // CF depletion rate
-
-
             var Event_damage_rate;
             if (this.isPandemic){
-                var coef = 1 / Math.sqrt(2 * Math.PI * this.Psigma * this.Psigma);
                 Event_damage_rate = this.Event * (valueNow.PM + valueNow.PVID)/2;
+                var coef = 1 / Math.sqrt(2 * Math.PI * this.Psigma * this.Psigma);
                 Event_damage_rate *= coef * Math.exp(-(t - this.Pmu)*(t - this.Pmu) / (2 * this.Psigma * this.Psigma));
             }else{
                 Event_damage_rate = this.Edamage * valueNow.Event * (valueNow.PM + valueNow.PVID)/2;
