@@ -26,7 +26,7 @@ function plot2(points0, points1) {
         // Event parameters
         this.isPandemic = false;
         this.Edamage=4;
-        this.Pmu = 2; // peak time
+        this.Ptau = 2; // peak time
         this.Psigma = 1; // spread
         // Initial domain values
         this.PreCF = 1;
@@ -43,7 +43,7 @@ function plot2(points0, points1) {
         this.SCflow=1;
 
         // Settings
-        this.varlist = ["CF", "Event", "ER", "SC", "PR", "PreCF", "PVID", "PM"];
+        this.varlist = ["CF", "ER", "SC", "PR", "PreCF", "PVID", "PM"];
 
 
         this.getW = function getW0(){
@@ -93,15 +93,15 @@ function plot2(points0, points1) {
 
 
             // CF depletion rate
-            var Event_damage_rate;
+            var Event_t;
             if (this.isPandemic){
-                Event_damage_rate = this.Event * (valueNow.PM + valueNow.PVID)/2;
                 var coef = 1 / Math.sqrt(2 * Math.PI * this.Psigma * this.Psigma);
-                Event_damage_rate *= coef * Math.exp(-(t - this.Pmu)*(t - this.Pmu) / (2 * this.Psigma * this.Psigma));
+                Event_t = this.Event * coef * Math.exp(-(t - this.Ptau)*(t - this.Ptau) / (2 * this.Psigma * this.Psigma));
             }else{
-                Event_damage_rate = this.Edamage * valueNow.Event * (valueNow.PM + valueNow.PVID)/2;
+                var k = this.Edamage;
+                Event_t = this.Event * k * Math.exp(-k * t);
             }
-
+            var Event_damage_rate = Event_t * (valueNow.PM + valueNow.PVID)/2;
             var CF_depletion_rate = this.CFdplt * valueNow.CF * Event_damage_rate;
 
             // Derivatives
@@ -109,7 +109,6 @@ function plot2(points0, points1) {
             d.SC = -SC_flow_rate;
             d.PR = - PR_flow_rate;
             d.ER = - ER_flow_rate;
-            d.Event = - Math.max(Event_damage_rate, 0);
             d.CF = CF_replenish_rate -  CF_depletion_rate;
             d.PreCF = 0;
             d.PVID = 0;

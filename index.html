@@ -65,9 +65,14 @@
                 </div>
                 <table class="table table-hover table-striped">
                     <tr>
+                        <th>Magnitude of the event</th>
+                        <td>{{ode.Event}}</td>
+                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.Event" ng-change="ode.update()"></td>
+                    </tr>
+                    <tr>
                         <th>Event damage rate constant</th>
                         <td>{{ode.Edamage}}</td>
-                        <td><input type="range" min=1 max=20 step=0.2 ng-model="ode.Edamage" ng-change="ode.update()"></td>
+                        <td><input type="range" min=0.5 max=10 step=0.1 ng-model="ode.Edamage" ng-change="ode.update()"></td>
                     </tr>
                     <tr>
                         <th>Pandemic event spread (sigma)</th>
@@ -75,19 +80,15 @@
                         <td><input type="range" min=0.2 max=2 step=0.1 ng-model="ode.Psigma" ng-change="ode.update()"></td>
                     </tr>
                     <tr>
-                        <th>Pandemic event peak time (mu)</th>
-                        <td>{{ode.Pmu}}</td>
-                        <td><input type="range" min=0 max=6 step=0.2 ng-model="ode.Pmu" ng-change="ode.update()"></td>
+                        <th>Pandemic event peak time (tau)</th>
+                        <td>{{ode.Ptau}}</td>
+                        <td><input type="range" min=0 max=6 step=0.2 ng-model="ode.Ptau" ng-change="ode.update()"></td>
                     </tr>
                 </table>
 
                 <h4 class="sliderTitle">Domain initial values</h4>
                 <table class="table table-hover table-striped">
-                    <tr>
-                        <th>Magnitude of the event</th>
-                        <td>{{ode.Event}}</td>
-                        <td><input type="range" min=0 max=1 step=0.02 ng-model="ode.Event" ng-change="ode.update()"></td>
-                    </tr>
+
                     <tr>
                         <th> External Resource</th>
                         <td>{{ode.ER}}</td>
