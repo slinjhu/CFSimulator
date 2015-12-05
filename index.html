@@ -63,7 +63,7 @@
                 <div class="checkbox">
                     <label><input type="checkbox" ng-model="ode.isPandemic" ng-change="ode.update()"> is pandemic model</label>
                 </div>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped sliders">
                     <tr>
                         <th>Magnitude of the event</th>
                         <td>{{ode.Event}}</td>
@@ -87,7 +87,7 @@
                 </table>
 
                 <h4 class="sliderTitle">Domain initial values</h4>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped sliders">
 
                     <tr>
                         <th> External Resource</th>
@@ -123,7 +123,7 @@
                 </table>
 
                 <h4 class="sliderTitle">Flow valve constants</h4>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped sliders">
                     <tr>
                         <th>CF depletion rate constant</th>
                         <td>{{ode.CFdplt}}</td>
