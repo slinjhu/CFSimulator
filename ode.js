@@ -101,7 +101,7 @@ function plot2(points0, points1) {
                 var k = this.Edamage;
                 Event_t = this.Event * k * Math.exp(-k * t);
             }
-            var Event_damage_rate = Event_t * (2 - valueNow.PM - valueNow.PVID)/2;
+            var Event_damage_rate = Event_t * (valueNow.PM - valueNow.PVID)/2;
             var CF_depletion_rate = this.CFdplt * valueNow.CF * Event_damage_rate;
 
             // Derivatives
